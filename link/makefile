@@ -1,8 +1,14 @@
 # makefile
 
-object=p foo3 foo4 foo4 p2
+object=p foo3 foo4 foo4 p2 p3
 
 all: $(object)
+
+p3:dll.o libvector.so
+	$(CC) -rdynamic -O2 -o p3 dll.o
+
+libvector.so:addvec.c multvec.c
+	$(CC) -shared -fPIC -o libvector.so addvec.c multvec.c
 
 p: main.o swap.o
 	$(CC) -o p main.o swap.o
@@ -25,5 +31,5 @@ foo5:foo5.o bar5.o
 	$(CC) -o foo5 foo5.o bar5.o
 
 clean:
-	rm -rf *.o *.a
+	rm -rf *.o *.a *.so
 	rm -rf $(object)
